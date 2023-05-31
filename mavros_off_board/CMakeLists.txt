@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8.3)
+cmake_minimum_required(VERSION 3.21.0)
 project(mavros_off_board)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
@@ -205,12 +205,4 @@ include_directories(
 # catkin_add_nosetests(test) 
 
 #Off board node .cpp
-add_executable(offb_node src/offb_node.cpp)
-target_link_libraries(offb_node ${catkin_LIBRARIES})
-
-add_executable(path src/path.cpp)
-target_link_libraries(path ${catkin_LIBRARIES})
-
-add_executable(set_offb src/set_offb.cpp)
-target_link_libraries(set_offb ${catkin_LIBRARIES})
 

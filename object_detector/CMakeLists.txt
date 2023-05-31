@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8.3)
+cmake_minimum_required(VERSION 3.21.0)
 project(object_detector)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
@@ -20,14 +20,13 @@ find_package(catkin REQUIRED COMPONENTS
 
 ## https://stackoverflow.com/questions/28252909/cmake-and-qt5-include-only-takes-one-argument
 
-
 find_package(Qt5 REQUIRED COMPONENTS Core Gui Widgets)
 
 ADD_DEFINITIONS(${QT_DEFINITIONS})
 
 find_package(Eigen3 REQUIRED) #Requiero Eigen 3
 
-find_package(OpenCV 4.2 REQUIRED) #Requiero a OpenCV
+find_package(OpenCV 4.7 REQUIRED) #Requiero a OpenCV
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -36,7 +35,7 @@ find_package(OpenCV 4.2 REQUIRED) #Requiero a OpenCV
 ## Uncomment this if the package has a setup.py. This macro ensures
 ## modules and global scripts declared therein get installed
 ## See http://ros.org/doc/api/catkin/html/user_guide/setup_dot_py.html
-# catkin_python_setup()
+#catkin_python_setup()
 
 ################################################
 ## Declare ROS messages, services and actions ##
@@ -63,11 +62,11 @@ find_package(OpenCV 4.2 REQUIRED) #Requiero a OpenCV
 ##   * add every package in MSG_DEP_SET to generate_messages(DEPENDENCIES ...)
 
 ## Generate messages in the 'msg' folder
- add_message_files(
-   FILES
-   Corners.msg
-   States.msg
- )
+ #add_message_files(
+ #  FILES
+  # Corners.msg
+  # States.msg
+ #)
 
 ## Generate services in the 'srv' folder
 # add_service_files(
@@ -86,6 +85,8 @@ find_package(OpenCV 4.2 REQUIRED) #Requiero a OpenCV
 ## Generate added messages and services with any dependencies listed here
  generate_messages(
    DEPENDENCIES
+   geometry_msgs
+   sensor_msgs
    std_msgs
  )
 
@@ -177,10 +178,13 @@ include_directories(
 
 ## Mark executable scripts (Python etc.) for installation
 ## in contrast to setup.py, you can choose the destination
-# install(PROGRAMS
-#   scripts/my_python_script
-#   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-# )
+#catkin_install_python(PROGRAMS
+ # src/corners_detector.py
+ # src/cent_calculator.py
+ # src/kalman_filter.py
+ # src/plot_estimation.py
+  #DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+#)
 
 ## Mark executables and/or libraries for installation
 # install(TARGETS ${PROJECT_NAME} ${PROJECT_NAME}_node
@@ -196,8 +200,8 @@ include_directories(
 #   PATTERN ".svn" EXCLUDE
 # )
 
-## Mark other files for installation (e.g. launch and bag files, etc.)
-# install(FILES
+##Mark other files for installation (e.g. launch and bag files, etc.)
+#install(DIRECTORY launch msg
 #   # myfile1
 #   # myfile2
 #   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
@@ -217,18 +221,22 @@ include_directories(
 # catkin_add_nosetests(test)
 
 #This scripts computes the position of the corners in Px and publish it in the ROS pipeline
-add_executable(corners_detector src/corners_detector.cpp)
-target_link_libraries(corners_detector ${catkin_LIBRARIES} Qt5::Widgets) 
-add_dependencies(corners_detector object_detector_generate_messages_cpp)
+#add_executable(corners_detector src/corners_detector.cpp)
+#add_library(corners_detector_lib corners_detector.py)
+#target_link_libraries(corners_detector ${catkin_LIBRARIES} Qt5::Widgets) 
+#add_dependencies(corners_detector object_detector_generate_messages_cpp)
 #This scripts computes the center of the image, angle measured with the X axis and the Height and Width of the image
-add_executable(cent_calculator src/cent_calculator.cpp)
-target_link_libraries(cent_calculator ${catkin_LIBRARIES})
-add_dependencies(cent_calculator object_detector_generate_messages_cpp)
+#add_executable(cent_calculator src/cent_calculator.cpp)
+#add_library(cent_calculator_lib cent_calculator.py)
+#target_link_libraries(cent_calculator ${catkin_LIBRARIES})
+#add_dependencies(cent_calculator object_detector_generate_messages_cpp)
 #This scripts is a Kalman filter to do tracking of the variables mentioned
-add_executable(kalman_filter src/kalman_filter.cpp)
-target_link_libraries(kalman_filter ${catkin_LIBRARIES} ${Eigen_LIBRARIES})
-add_dependencies(kalman_filter object_detector_generate_messages_cpp)
+#add_executable(kalman_filter src/kalman_filter.cpp)
+#add_library(kalman_filter_lib kalman_filter.py)
+#target_link_libraries(kalman_filter ${catkin_LIBRARIES} ${Eigen_LIBRARIES})
+#add_dependencies(kalman_filter object_detector_generate_messages_cpp)
 #This scripts is optional and plot the result of the tracking system
-add_executable(plot_estimation src/plot_estimation.cpp)
-target_link_libraries(plot_estimation ${catkin_LIBRARIES} ${OpenCV_LIBS}) 
-add_dependencies(plot_estimation object_detector_generate_messages_cpp)
+#add_executable(plot_estimation src/plot_estimation.cpp)
+#add_library(plot_estimation_lib plot_estimation.py)
+#target_link_libraries(plot_estimation ${catkin_LIBRARIES} ${OpenCV_LIBS}) 
+#add_dependencies(plot_estimation object_detector_generate_messages_cpp)

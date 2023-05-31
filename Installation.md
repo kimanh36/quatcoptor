@@ -15,6 +15,7 @@ Then download the PX4-Autopilot in `/home/$USER/`  with the next command.
 git clone https://github.com/PX4/PX4-Autopilot.git --recursive
 cd PX4-Autopilot
 git checkout cab477d71550558756509ad3a6ffcbebbbbf82b1
+git submodule update --init
 ```
 Once it is downloaded it will create a folder called `PX4-Autopilot`. To install the basic development dependencies do as follows.
 ```bash
@@ -51,8 +52,6 @@ sudo apt-get install ros-noetic-mavros ros-noetic-mavros-extras
 wget https://raw.githubusercontent.com/mavlink/mavros/master/mavros/scripts/install_geographiclib_datasets.sh
 sudo bash ./install_geographiclib_datasets.sh   
 ```
-
-This project has dependencies in other ROS packages which are shown below. To install [find_object_2d](http://wiki.ros.org/find_object_2d) and [vision_opencv](http://wiki.ros.org/vision_opencv) ROS packages using the following commands.
 
 > Note: Please consider installing OpenCV from source (before running these commands) to enable SIFT and SURF as these 
 > produced the best results 

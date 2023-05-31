@@ -7,12 +7,6 @@ The system has four launch files embedded in *mavros_off_board* and these are us
  - **mavros_rviz.launch** This launch file is only for visualization purpose and shows the vehicle in Gazebo and Rviz. The model launched is in urdf format.
  - **urdf_launcher.launch** This launch file launches Mavros, PX4 SITL, Rviz and Gazebo. This launch file allows the control of the vehicle with ROS. The model launched is in xacro format.
 
-The frames and TF of the vehicle in Rviz are shown in the next image.
-
-<div  align="center">
-<img src="./images/rviz_gif.gif" width="480" />
-</div>
-
 Use the launch files based on your own needs. If you need only simulate the vehicle use **mavros_posix_sitl.launch**, but if visualization in Rviz is also needed use **urdf_launcher.launch**. 
 
 With the package **mavros_off_board**  launch the system in a simulated environment 
@@ -34,8 +28,8 @@ This will deploy the Gazebo world created with the UAV, allowing further iterati
 Once the simulation is running,  Takeoff the vehicle and start its teleoperation with
 
 ```bash
-rosrun mavros_off_board offb_node
-rosrun mavros_off_board teleop_node_pos
+rosrun mavros_off_board offb_node.py
+rosrun mavros_off_board teleop_node_pos.py
 ```
 
 Move the vehicle with the keyboard along the simulation space and locate it above the landing pad.
@@ -43,17 +37,13 @@ Move the vehicle with the keyboard along the simulation space and locate it abov
 To use the detection pipeline in **object_detector** use 
 
 ```bash
-roslaunch object_detector simu.launch
+rosrun object_detector landing_detector.py
 ```
-This will start the detection module of the system and track the landing platform as shown by the image below.
- 
- <div  align="center">
-<img  src="./images/kf.png" width="330">
-</div>
+This will start the detection module of the system and track the landing platform 
 
 To land the vehicle use the **drone_controller** package. The process variable of the controller is the output of the detection pipeline. Do not use this package without the detector.  
 
 ```bash
-rosrun drone_controller pid_controller_final 
+rosrun drone_controller MPC_CPP 
 ```
 The variables controlled are velocity in X and Y, the yaw rate and the position in Z of the quad-rotor.
